@@ -165,50 +165,68 @@ const i18nTextNodes = Array.from(document.querySelectorAll("[data-i18n]"));
 const i18nHtmlNodes = Array.from(document.querySelectorAll("[data-i18n-html]"));
 const i18nPlaceholderNodes = Array.from(document.querySelectorAll("[data-i18n-placeholder]"));
 
-let currentLang = localStorage.getItem("eventi_lang") || "en";
+function getSavedLang() {
+  try {
+    const saved = localStorage.getItem("eventi_lang");
+    return saved === "ar" ? "ar" : "en";
+  } catch (error) {
+    return "en";
+  }
+}
+
+let currentLang = getSavedLang();
 
 function t(key) {
-  return TRANSLATIONS[currentLang][key] || TRANSLATIONS.en[key] || key;
+  const currentDict = TRANSLATIONS[currentLang] || TRANSLATIONS.en;
+  return currentDict[key] || TRANSLATIONS.en[key] || key;
 }
 
 function applyTranslations() {
-  document.title = t("page_title");
-  document.documentElement.lang = currentLang;
-  document.documentElement.dir = currentLang === "ar" ? "rtl" : "ltr";
-  document.body.classList.toggle("is-arabic", currentLang === "ar");
+  try {
+    document.title = t("page_title");
+    document.documentElement.lang = currentLang;
+    document.documentElement.dir = currentLang === "ar" ? "rtl" : "ltr";
+    document.body.classList.toggle("is-arabic", currentLang === "ar");
 
-  if (langToggle) {
-    langToggle.textContent = t("lang_button");
-  }
-
-  if (menuToggle) {
-    menuToggle.setAttribute("aria-label", t("menu_toggle_aria"));
-  }
-
-  i18nTextNodes.forEach((el) => {
-    const key = el.getAttribute("data-i18n");
-    const next = t(key);
-    if (el.textContent !== next) el.textContent = next;
-  });
-
-  i18nHtmlNodes.forEach((el) => {
-    const key = el.getAttribute("data-i18n-html");
-    const next = t(key);
-    if (el.innerHTML !== next) el.innerHTML = next;
-  });
-
-  i18nPlaceholderNodes.forEach((el) => {
-    const key = el.getAttribute("data-i18n-placeholder");
-    const next = t(key);
-    if (el.getAttribute("placeholder") !== next) {
-      el.setAttribute("placeholder", next);
+    if (langToggle) {
+      langToggle.textContent = t("lang_button");
     }
-  });
+
+    if (menuToggle) {
+      menuToggle.setAttribute("aria-label", t("menu_toggle_aria"));
+    }
+
+    i18nTextNodes.forEach((el) => {
+      const key = el.getAttribute("data-i18n");
+      const next = t(key);
+      if (el.textContent !== next) el.textContent = next;
+    });
+
+    i18nHtmlNodes.forEach((el) => {
+      const key = el.getAttribute("data-i18n-html");
+      const next = t(key);
+      if (el.innerHTML !== next) el.innerHTML = next;
+    });
+
+    i18nPlaceholderNodes.forEach((el) => {
+      const key = el.getAttribute("data-i18n-placeholder");
+      const next = t(key);
+      if (el.getAttribute("placeholder") !== next) {
+        el.setAttribute("placeholder", next);
+      }
+    });
+  } catch (error) {
+    console.error("Translation render failed:", error);
+  }
 }
 
 function toggleLanguage() {
   currentLang = currentLang === "en" ? "ar" : "en";
-  localStorage.setItem("eventi_lang", currentLang);
+  try {
+    localStorage.setItem("eventi_lang", currentLang);
+  } catch (error) {
+    console.warn("Could not save language preference:", error);
+  }
   document.body.classList.add("is-lang-switching");
   window.requestAnimationFrame(() => {
     applyTranslations();
