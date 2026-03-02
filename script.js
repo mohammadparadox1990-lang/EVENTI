@@ -193,11 +193,22 @@ function setHtmlSafe(el, value) {
   if (el.innerHTML !== next) el.innerHTML = next;
 }
 
+function resetHorizontalScroll() {
+  try {
+    window.scrollTo({ left: 0, top: window.scrollY, behavior: "auto" });
+  } catch (error) {
+    window.scrollTo(0, window.scrollY);
+  }
+  document.documentElement.scrollLeft = 0;
+  if (document.body) document.body.scrollLeft = 0;
+}
+
 function applyTranslations() {
   document.title = t("page_title");
   document.documentElement.lang = currentLang;
-  document.documentElement.dir = currentLang === "ar" ? "rtl" : "ltr";
+  document.documentElement.dir = "ltr";
   document.body.classList.toggle("is-arabic", currentLang === "ar");
+  document.body.classList.toggle("is-rtl", currentLang === "ar");
 
   if (langToggle) {
     langToggle.textContent = t("lang_button");
@@ -237,6 +248,11 @@ function applyTranslations() {
       console.error("Placeholder translation failed:", error);
     }
   });
+
+  // Android/WebView can keep stale horizontal scroll when dir flips ltr/rtl.
+  window.requestAnimationFrame(resetHorizontalScroll);
+  window.setTimeout(resetHorizontalScroll, 0);
+  window.setTimeout(resetHorizontalScroll, 120);
 }
 
 function toggleLanguage() {

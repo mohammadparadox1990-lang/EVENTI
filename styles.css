@@ -10,11 +10,17 @@
 }
 
 *{ box-sizing:border-box; margin:0; padding:0; }
-html{ scroll-behavior:smooth; }
+html{
+  scroll-behavior:smooth;
+  overflow-x: hidden;
+  overflow-x: clip;
+}
 body{
   font-family: "Poppins", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
   background: var(--bg);
   color: var(--text);
+  overflow-x: hidden;
+  overflow-x: clip;
 }
 body.is-arabic{
   font-family: "Tajawal", "Poppins", system-ui, sans-serif;
@@ -29,8 +35,10 @@ body.is-lang-switching *::after{
 }
 
 .container{
-  width:min(1120px, calc(100% - 48px));
-  margin-inline:auto;
+  width: calc(100% - 48px);
+  max-width: 1120px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* NAVBAR */
@@ -100,6 +108,16 @@ body.is-lang-switching *::after{
   letter-spacing: .14em;
   font-size: 20px;
   line-height: 1;
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+
+.logo-e-rev{
+  display: inline-block;
+  transform: translateX(-0.045em) scaleX(-1);
+  transform-origin: center;
+  margin-left: 0;
+  margin-right: 0;
 }
 
 .tag {
@@ -275,10 +293,10 @@ body.is-lang-switching *::after{
 .hero-bg{
   position:absolute;
   inset:0;
-  background-image: url('assets/hero-eventi-city.jpeg');
+  background-image: url('assets/hero-eventi-show.jpg');
   background-size: cover;
   background-repeat: no-repeat;
-  background-position: center center;
+  background-position: center 34%;
   filter: saturate(1.15) contrast(1.08);
   transform: none;
   opacity: .72;
@@ -310,6 +328,8 @@ body.is-lang-switching *::after{
   font-weight: 900;
   letter-spacing: .08em;
   line-height: .95;
+  direction: ltr;
+  unicode-bidi: isolate;
 }
 
 .hero-sub{
@@ -589,24 +609,23 @@ body.is-lang-switching *::after{
   color: var(--muted);
 }
 
-html[dir="rtl"] .tag,
-html[dir="rtl"] .nav-links a,
-html[dir="rtl"] .btn,
-html[dir="rtl"] .mini-title,
-html[dir="rtl"] .info-label,
-html[dir="rtl"] .quote-author,
-html[dir="rtl"] .lang-toggle{
+body.is-rtl .tag,
+body.is-rtl .nav-links a,
+body.is-rtl .btn,
+body.is-rtl .mini-title,
+body.is-rtl .info-label,
+body.is-rtl .quote-author,
+body.is-rtl .lang-toggle{
   letter-spacing: 0;
 }
 
-html[dir="rtl"] .section-title,
-html[dir="rtl"] .hero-title-main,
-html[dir="rtl"] .hero-sub,
-html[dir="rtl"] .eyebrow,
-html[dir="rtl"] .card h3,
-html[dir="rtl"] .card-num,
-html[dir="rtl"] .highlight-box h3,
-html[dir="rtl"] .contact-form label{
+body.is-rtl .section-title,
+body.is-rtl .hero-sub,
+body.is-rtl .eyebrow,
+body.is-rtl .card h3,
+body.is-rtl .card-num,
+body.is-rtl .highlight-box h3,
+body.is-rtl .contact-form label{
   letter-spacing: 0;
   word-break: normal;
   overflow-wrap: normal;
@@ -614,38 +633,38 @@ html[dir="rtl"] .contact-form label{
 }
 
 /* Ensure Arabic headings render with a joining-friendly font */
-html[dir="rtl"] .hero-title-main,
-html[dir="rtl"] .section-title,
-html[dir="rtl"] .card h3,
-html[dir="rtl"] .highlight-box h3{
+body.is-rtl .section-title,
+body.is-rtl .card h3,
+body.is-rtl .highlight-box h3{
   font-family: "Tajawal", "Poppins", system-ui, sans-serif;
 }
 
-html[dir="rtl"] .lead,
-html[dir="rtl"] .highlight-box,
-html[dir="rtl"] .card p,
-html[dir="rtl"] .contact-left,
-html[dir="rtl"] .contact-form label{
+body.is-rtl .lead,
+body.is-rtl .highlight-box,
+body.is-rtl .card p,
+body.is-rtl .contact-left,
+body.is-rtl .contact-form label{
+  direction: rtl;
   text-align: right;
 }
 
-html[dir="rtl"] .info-row{
+body.is-rtl .info-row{
   flex-direction: row-reverse;
 }
 
-html[dir="rtl"] .mobile-menu a{
+body.is-rtl .mobile-menu a{
   width: 100%;
   text-align: right;
 }
 
 /* Keep header layout fixed while allowing Arabic text direction */
-html[dir="rtl"] .navbar,
-html[dir="rtl"] .nav-inner{
+body.is-rtl .navbar,
+body.is-rtl .nav-inner{
   direction: ltr;
 }
 
-html[dir="rtl"] .nav-links,
-html[dir="rtl"] .mobile-menu{
+body.is-rtl .nav-links,
+body.is-rtl .mobile-menu{
   direction: rtl;
 }
 
@@ -722,6 +741,7 @@ html[dir="rtl"] .mobile-menu{
   .cards-grid.three{ grid-template-columns: 1fr; }
   .two{ grid-template-columns: 1fr; }
   .client-name{ font-size: 20px; }
+  .hero-bg{ background-position: 62% 34%; }
 }
 .hero {
   position: relative;
@@ -818,7 +838,4 @@ html[dir="rtl"] .mobile-menu{
   margin-top: 0px;      /* closer to logo */
   text-align: center;   /* center under logo */
 }
-
-
-
 
