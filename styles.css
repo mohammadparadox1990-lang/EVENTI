@@ -20,6 +20,14 @@ body.is-arabic{
   font-family: "Tajawal", "Poppins", system-ui, sans-serif;
 }
 
+/* Prevent jank during live language switch */
+body.is-lang-switching *,
+body.is-lang-switching *::before,
+body.is-lang-switching *::after{
+  transition: none !important;
+  animation: none !important;
+}
+
 .container{
   width:min(1120px, calc(100% - 48px));
   margin-inline:auto;
@@ -589,6 +597,28 @@ html[dir="rtl"] .info-label,
 html[dir="rtl"] .quote-author,
 html[dir="rtl"] .lang-toggle{
   letter-spacing: 0;
+}
+
+html[dir="rtl"] .section-title,
+html[dir="rtl"] .hero-title-main,
+html[dir="rtl"] .hero-sub,
+html[dir="rtl"] .eyebrow,
+html[dir="rtl"] .card h3,
+html[dir="rtl"] .card-num,
+html[dir="rtl"] .highlight-box h3,
+html[dir="rtl"] .contact-form label{
+  letter-spacing: 0;
+  word-break: normal;
+  overflow-wrap: normal;
+  hyphens: none;
+}
+
+/* Ensure Arabic headings render with a joining-friendly font */
+html[dir="rtl"] .hero-title-main,
+html[dir="rtl"] .section-title,
+html[dir="rtl"] .card h3,
+html[dir="rtl"] .highlight-box h3{
+  font-family: "Tajawal", "Poppins", system-ui, sans-serif;
 }
 
 html[dir="rtl"] .lead,
